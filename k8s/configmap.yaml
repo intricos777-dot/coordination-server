@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coordination-config
+  namespace: coordination-system
+  labels:
+    app.kubernetes.io/name: coordination-server
+data:
+  NODE_ENV: "production"
+  COORD_PORT: "4126"
+  COORD_ALLOWED_ORIGINS: "http://localhost:3000,http://localhost:4096"
+  COORD_LOG_LEVEL: "info"
+  LOG_LEVEL: "info"
+  COORD_JWT_EXPIRY: "24h"
+  COORD_RATE_LIMIT_WINDOW: "60000"
+  COORD_RATE_LIMIT_MAX: "100"
+  COORD_WS_RATE_LIMIT: "50"

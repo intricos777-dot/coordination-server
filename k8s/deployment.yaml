@@ -1,0 +1,186 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coordination-server
+  namespace: coordination-system
+  labels:
+    app.kubernetes.io/name: coordination-server
+    app.kubernetes.io/component: coordination
+    app.kubernetes.io/part-of: coordination-system
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: coordination-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: coordination-server
+        app.kubernetes.io/component: coordination
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4126"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: coordination-server
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: coordination-server
+        image: coordination-server:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 4126
+          protocol: TCP
+        - name: ws
+          containerPort: 4126
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: coordination-config
+        - secretRef:
+            name: coordination-secrets
+        env:
+        - name: COORD_NODE_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: COORD_LISTEN_URL
+          value: "ws://$(COORD_NODE_ID).coordination-internal:4126/ws"
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4126
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4126
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: data
+          mountPath: /app/data
+        - name: certs
+          mountPath: /app/data/certs
+          readOnly: true
+      volumes:
+      - name: data
+        emptyDir:
+          sizeLimit: 1Gi
+      - name: certs
+        secret:
+          secretName: coordination-tls
+          optional: true
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - coordination-server
+              topologyKey: kubernetes.io/hostname
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coordination-internal
+  namespace: coordination-system
+  labels:
+    app.kubernetes.io/name: coordination-server
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 4126
+    targetPort: 4126
+    protocol: TCP
+  - name: ws
+    port: 4126
+    targetPort: 4126
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: coordination-server
+  publishNotReadyAddresses: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coordination-external
+  namespace: coordination-system
+  labels:
+    app.kubernetes.io/name: coordination-server
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 4126
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 4126
+    protocol: TCP
+  - name: ws
+    port: 4126
+    targetPort: 4126
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: coordination-server
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: coordination-server
+  namespace: coordination-system
+  labels:
+    app.kubernetes.io/name: coordination-server
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: coordination-server
+  namespace: coordination-system
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "endpoints"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: coordination-server
+  namespace: coordination-system
+subjects:
+- kind: ServiceAccount
+  name: coordination-server
+  namespace: coordination-system
+roleRef:
+  kind: Role
+  name: coordination-server
+  apiGroup: rbac.authorization.k8s.io

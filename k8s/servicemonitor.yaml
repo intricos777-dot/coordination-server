@@ -1,0 +1,95 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: coordination-server
+  namespace: coordination-system
+  labels:
+    app.kubernetes.io/name: coordination-server
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: coordination-server
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 30s
+    scheme: http
+  namespaceSelector:
+    matchNames:
+    - coordination-system
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: coordination-server-alerts
+  namespace: coordination-system
+  labels:
+    app.kubernetes.io/name: coordination-server
+    release: prometheus
+spec:
+  groups:
+  - name: coordination-server.rules
+    rules:
+    - alert: CoordinationServerDown
+      expr: up{job="coordination-server"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Coordination Server is down"
+        description: "Coordination server {{ $labels.instance }} has been down for more than 1 minute."
+    
+    - alert: CoordinationServerHighMemory
+      expr: (container_memory_usage_bytes{container="coordination-server"} / container_spec_memory_limit_bytes{container="coordination-server"}) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Coordination Server high memory usage"
+        description: "Coordination server {{ $labels.instance }} memory usage is above 90%."
+    
+    - alert: CoordinationServerHighCPU
+      expr: (rate(container_cpu_usage_seconds_total{container="coordination-server"}[5m]) / container_spec_cpu_quota{container="coordination-server"} * 100) > 80
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Coordination Server high CPU usage"
+        description: "Coordination server {{ $labels.instance }} CPU usage is above 80%."
+    
+    - alert: CoordinationServerHighAgentCount
+      expr: coordination_agents_connected > 1000
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Coordination Server high agent count"
+        description: "Coordination server {{ $labels.instance }} has {{ $value }} connected agents."
+    
+    - alert: CoordinationServerHighSessionCount
+      expr: coordination_sessions_active > 100
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Coordination Server high session count"
+        description: "Coordination server {{ $labels.instance }} has {{ $value }} active sessions."
+    
+    - alert: CoordinationServerFederationPeerDown
+      expr: coordination_federation_peers_online < 2
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Coordination Server federation peer down"
+        description: "Coordination server {{ $labels.instance }} has only {{ $value }} online federation peers."
+    
+    - alert: CoordinationServerRateLimitExceeded
+      expr: rate(coordination_rate_limit_exceeded_total[5m]) > 0.1
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Coordination Server rate limit exceeded"
+        description: "Coordination server {{ $labels.instance }} is experiencing rate limit violations."

@@ -1,0 +1,196 @@
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-11T23:35:30.768Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-11T23:35:30.778Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-11T23:35:30.779Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-11T23:36:18.832Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-11T23:36:18.844Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-11T23:36:18.845Z"}
+{"agentId":"test-agent-1","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-11T23:36:21.596Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-11T23:36:21.612Z"}
+{"agentId":"test-agent-1","event":"agent_registered","level":"info","message":"AUDIT","name":"Test Agent","timestamp":"2026-09-11T23:36:21.618Z","type":"test"}
+{"error":"client is not defined","level":"error","message":"WS message error","timestamp":"2026-09-11T23:36:21.620Z"}
+{"agentId":"test-agent-1","event":"agent_unregistered","level":"info","message":"AUDIT","timestamp":"2026-09-11T23:36:31.733Z"}
+{"agentId":"test-agent-2","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-11T23:37:09.661Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-11T23:37:09.704Z"}
+{"agentId":"test-agent-2","event":"agent_registered","level":"info","message":"AUDIT","name":"Test Agent 2","timestamp":"2026-09-11T23:37:09.711Z","type":"test"}
+{"error":"client is not defined","level":"error","message":"WS message error","timestamp":"2026-09-11T23:37:09.714Z"}
+{"agentId":"test-agent-2","event":"agent_unregistered","level":"info","message":"AUDIT","timestamp":"2026-09-11T23:37:19.738Z"}
+{"agentId":"test-agent-2","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-11T23:42:51.116Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-11T23:42:51.155Z"}
+{"agentId":"test-agent-2","event":"agent_registered","level":"info","message":"AUDIT","name":"Test Agent 2","timestamp":"2026-09-11T23:42:51.166Z","type":"test"}
+{"error":"client is not defined","level":"error","message":"WS message error","timestamp":"2026-09-11T23:42:51.169Z"}
+{"agentId":"test-agent-2","event":"agent_unregistered","level":"info","message":"AUDIT","timestamp":"2026-09-11T23:43:01.203Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-11T23:57:26.975Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-11T23:57:26.981Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-11T23:57:26.981Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:00:07.134Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:00:07.142Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:00:07.142Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:04:23.558Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:04:23.571Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:04:23.572Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:05:05.374Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:05:05.378Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:05:05.379Z"}
+{"agentId":"test-agent","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:05:07.138Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:05:20.837Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:05:20.842Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:05:20.842Z"}
+{"agentId":"test-agent-2","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:05:22.749Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T00:05:22.763Z"}
+{"agentId":"test-agent-2","event":"agent_registered","level":"info","message":"AUDIT","name":"Test Agent 2","timestamp":"2026-09-12T00:05:22.767Z","type":"test"}
+{"event":"session_created","level":"info","message":"AUDIT","owner":"test-agent-2","sessionId":"518f76b6-b679-4bed-94c5-ed90f4bd60fe","timestamp":"2026-09-12T00:05:22.769Z","visibility":"public"}
+{"agentId":"test-agent-2","event":"agent_unregistered","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:05:22.776Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:18:49.382Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:18:49.388Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:18:49.388Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:18:49.388Z"}
+{"agentId":"test-lia","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:18:52.090Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:22:11.241Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:22:11.246Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:22:11.246Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:22:11.246Z"}
+{"agentId":"test-lia","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:22:14.027Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:23:41.811Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:23:41.819Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:23:41.819Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:23:41.820Z"}
+{"agentId":"test-lia","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:23:44.598Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T00:23:44.740Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:30:37.375Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:30:37.377Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:30:37.377Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:30:37.378Z"}
+{"agentId":"test-lia","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:30:40.159Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T00:30:40.314Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:31:42.666Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:31:42.672Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:31:42.672Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:31:42.672Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:34:55.602Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:34:55.611Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:34:55.612Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:34:55.612Z"}
+{"level":"info","message":"Federation node node-19b11479 started","timestamp":"2026-09-12T00:38:20.648Z"}
+{"level":"info","message":"Federation node started: node-19b11479","timestamp":"2026-09-12T00:38:20.655Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:38:20.663Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:38:20.663Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:38:20.663Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:38:20.663Z"}
+{"level":"info","message":"Federation node node-014e15c2 started","timestamp":"2026-09-12T00:39:54.286Z"}
+{"level":"info","message":"Federation node started: node-014e15c2","timestamp":"2026-09-12T00:39:54.294Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:39:54.304Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:39:54.304Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:39:54.304Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:39:54.304Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T00:39:56.036Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T00:39:56.043Z"}
+{"level":"info","message":"Federation node node-014e15c2 stopped","timestamp":"2026-09-12T00:39:56.044Z"}
+{"level":"info","message":"Server closed","timestamp":"2026-09-12T00:39:56.050Z"}
+{"level":"info","message":"Federation node node-b7eaab42 started","timestamp":"2026-09-12T00:40:48.240Z"}
+{"level":"info","message":"Federation node started: node-b7eaab42","timestamp":"2026-09-12T00:40:48.250Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:40:48.258Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:40:48.258Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:40:48.258Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:40:48.258Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T00:40:50.064Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T00:40:50.071Z"}
+{"level":"info","message":"Federation node node-b7eaab42 stopped","timestamp":"2026-09-12T00:40:50.072Z"}
+{"level":"info","message":"Server closed","timestamp":"2026-09-12T00:40:50.075Z"}
+{"level":"info","message":"Federation node node-d7d345ff started","timestamp":"2026-09-12T00:43:36.237Z"}
+{"level":"info","message":"Federation node started: node-d7d345ff","timestamp":"2026-09-12T00:43:36.250Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:43:36.261Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:43:36.261Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:43:36.261Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:43:36.261Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T00:43:38.992Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T00:43:39.001Z"}
+{"level":"info","message":"Federation node node-d7d345ff stopped","timestamp":"2026-09-12T00:43:39.001Z"}
+{"level":"info","message":"Server closed","timestamp":"2026-09-12T00:43:39.006Z"}
+{"level":"info","message":"Federation node node-a51466df started","timestamp":"2026-09-12T00:44:07.203Z"}
+{"level":"info","message":"Federation node started: node-a51466df","timestamp":"2026-09-12T00:44:07.213Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:44:07.220Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:44:07.220Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:44:07.220Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:44:07.220Z"}
+{"agentId":"test","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:44:10.028Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T00:44:10.054Z"}
+{"level":"info","message":"Federation node node-7b4c791a started","timestamp":"2026-09-12T00:47:55.116Z"}
+{"level":"info","message":"Federation node started: node-7b4c791a","timestamp":"2026-09-12T00:47:55.118Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:47:55.125Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:47:55.125Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:47:55.125Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:47:55.126Z"}
+{"agentId":"test","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:47:57.938Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T00:47:57.946Z"}
+{"level":"info","message":"Federation node node-2a88068f started","timestamp":"2026-09-12T00:50:58.184Z"}
+{"level":"info","message":"Federation node started: node-2a88068f","timestamp":"2026-09-12T00:50:58.193Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:50:58.201Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:50:58.201Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:50:58.201Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:50:58.201Z"}
+{"agentId":"test-lia","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:51:00.934Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T00:51:01.120Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T00:51:05.214Z"}
+{"level":"info","message":"Federation node node-2a88068f stopped","timestamp":"2026-09-12T00:51:05.215Z"}
+{"level":"info","message":"Server closed","timestamp":"2026-09-12T00:51:05.221Z"}
+{"level":"info","message":"Federation node node-97111bfa started","timestamp":"2026-09-12T00:54:42.321Z"}
+{"level":"info","message":"Federation node started: node-97111bfa","timestamp":"2026-09-12T00:54:42.329Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:54:42.337Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:54:42.337Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:54:42.338Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:54:42.338Z"}
+{"agentId":"test-lia-groq","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:54:44.858Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T00:54:45.030Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T00:54:49.874Z"}
+{"level":"info","message":"Federation node node-97111bfa stopped","timestamp":"2026-09-12T00:54:49.875Z"}
+{"level":"info","message":"Server closed","timestamp":"2026-09-12T00:54:49.880Z"}
+{"level":"info","message":"Federation node node-71b6b634 started","timestamp":"2026-09-12T00:57:09.031Z"}
+{"level":"info","message":"Federation node started: node-71b6b634","timestamp":"2026-09-12T00:57:09.045Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T00:57:09.057Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T00:57:09.057Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T00:57:09.057Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T00:57:09.057Z"}
+{"agentId":"test-lia-groq","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T00:57:11.590Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T00:57:11.769Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T00:57:16.614Z"}
+{"level":"info","message":"Federation node node-71b6b634 stopped","timestamp":"2026-09-12T00:57:16.615Z"}
+{"level":"info","message":"Server closed","timestamp":"2026-09-12T00:57:16.619Z"}
+{"level":"info","message":"Federation node node-75363c34 started","timestamp":"2026-09-12T01:01:24.284Z"}
+{"level":"info","message":"Federation node started: node-75363c34","timestamp":"2026-09-12T01:01:24.296Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T01:01:24.311Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T01:01:24.311Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T01:01:24.311Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T01:01:24.311Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T01:01:25.919Z"}
+{"level":"info","message":"Federation node node-46521359 started","timestamp":"2026-09-12T01:03:13.441Z"}
+{"level":"info","message":"Federation node started: node-46521359","timestamp":"2026-09-12T01:03:13.445Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T01:03:13.452Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T01:03:13.453Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T01:03:13.453Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T01:03:18.243Z"}
+{"level":"info","message":"Federation node node-afeed6e2 started","timestamp":"2026-09-12T01:03:39.698Z"}
+{"level":"info","message":"Federation node started: node-afeed6e2","timestamp":"2026-09-12T01:03:39.707Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T01:03:39.715Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T01:03:39.715Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T01:03:39.715Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T01:04:32.798Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T01:05:39.454Z"}
+{"level":"info","message":"Federation node node-69bd4166 started","timestamp":"2026-09-12T01:07:14.210Z"}
+{"level":"info","message":"Federation node started: node-69bd4166","timestamp":"2026-09-12T01:07:14.215Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T01:07:14.223Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T01:07:14.223Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T01:07:14.223Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T01:07:14.223Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T01:07:17.031Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T01:07:17.047Z"}
+{"level":"info","message":"Federation node node-69bd4166 stopped","timestamp":"2026-09-12T01:07:17.048Z"}
+{"level":"info","message":"Server closed","timestamp":"2026-09-12T01:07:17.050Z"}
+{"level":"info","message":"Federation node node-77705aef started","timestamp":"2026-09-12T01:10:18.845Z"}
+{"level":"info","message":"Federation node started: node-77705aef","timestamp":"2026-09-12T01:10:18.853Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T01:10:18.863Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T01:10:18.863Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T01:10:18.863Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T01:10:18.864Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T01:10:21.634Z"}
+{"agentId":"test-client","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T01:10:21.660Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T01:10:21.668Z"}

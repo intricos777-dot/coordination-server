@@ -1,0 +1,50 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: coordination-system
+
+resources:
+- namespace.yaml
+- configmap.yaml
+- secret.yaml
+- deployment.yaml
+- hpa.yaml
+- servicemonitor.yaml
+- ingress.yaml
+
+labels:
+- includeSelectors: true
+  pairs:
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/part-of: coordination-system
+
+commonAnnotations:
+  app.kubernetes.io/version: "1.0.0"
+
+configMapGenerator:
+- name: coordination-config
+  behavior: merge
+  literals:
+  - COORD_ALLOWED_ORIGINS=https://coordination.example.com
+
+secretGenerator:
+- name: coordination-secrets
+  behavior: merge
+  literals:
+  # These will be replaced by external secret operator or sealed secrets
+  - COORD_JWT_SECRET=REPLACE_ME
+  - COORD_ROOT_KEY=REPLACE_ME
+  - COORD_ADMIN_TOKEN=REPLACE_ME
+
+images:
+- name: coordination-server
+  newTag: latest
+
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/image
+      value: ghcr.io/yourorg/coordination-server:v1.0.0
+  target:
+    kind: Deployment
+    name: coordination-server

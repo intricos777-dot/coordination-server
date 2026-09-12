@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: coordination-system
+  labels:
+    name: coordination-system
+    app.kubernetes.io/name: coordination-server
+    app.kubernetes.io/part-of: coordination-system

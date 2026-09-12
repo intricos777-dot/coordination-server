@@ -1,0 +1,227 @@
+version: '3.8'
+
+services:
+  # ─── Coordination Server (Primary) ──────────────────────────────
+  
+  coordination-primary:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: coordination-primary
+    restart: unless-stopped
+    ports:
+      - "4126:4126"
+    environment:
+      - NODE_ENV=production
+      - COORD_PORT=4126
+      - COORD_NODE_ID=primary
+      - COORD_LISTEN_URL=ws://coordination-primary:4126/ws
+      - COORD_JWT_SECRET=${COORD_JWT_SECRET:-}
+      - COORD_ROOT_KEY=${COORD_ROOT_KEY:-}
+      - COORD_ADMIN_TOKEN=${COORD_ADMIN_TOKEN:-}
+      - COORD_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:4096,http://127.0.0.1:3000,http://127.0.0.1:4096
+      - COORD_LOG_LEVEL=info
+      - LOG_LEVEL=info
+    volumes:
+      - coordination-primary-data:/app/data
+      - ./certs:/app/data/certs:ro
+    networks:
+      - coordination-net
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4126/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
+          cpus: '0.25'
+
+  # ─── Coordination Server (Secondary/Federated) ──────────────────
+  
+  coordination-secondary:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: coordination-secondary
+    restart: unless-stopped
+    ports:
+      - "4127:4126"
+    environment:
+      - NODE_ENV=production
+      - COORD_PORT=4126
+      - COORD_NODE_ID=secondary
+      - COORD_LISTEN_URL=ws://coordination-secondary:4126/ws
+      - COORD_JWT_SECRET=${COORD_JWT_SECRET:-}
+      - COORD_ROOT_KEY=${COORD_ROOT_KEY:-}
+      - COORD_ADMIN_TOKEN=${COORD_ADMIN_TOKEN:-}
+      - COORD_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:4096,http://127.0.0.1:3000,http://127.0.0.1:4096
+      - COORD_LOG_LEVEL=info
+      - LOG_LEVEL=info
+    volumes:
+      - coordination-secondary-data:/app/data
+      - ./certs:/app/data/certs:ro
+    networks:
+      - coordination-net
+    depends_on:
+      - coordination-primary
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4126/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ─── Coordination Server (Tertiary/Federated) ───────────────────
+  
+  coordination-tertiary:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: coordination-tertiary
+    restart: unless-stopped
+    ports:
+      - "4128:4126"
+    environment:
+      - NODE_ENV=production
+      - COORD_PORT=4126
+      - COORD_NODE_ID=tertiary
+      - COORD_LISTEN_URL=ws://coordination-tertiary:4126/ws
+      - COORD_JWT_SECRET=${COORD_JWT_SECRET:-}
+      - COORD_ROOT_KEY=${COORD_ROOT_KEY:-}
+      - COORD_ADMIN_TOKEN=${COORD_ADMIN_TOKEN:-}
+      - COORD_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:4096,http://127.0.0.1:3000,http://127.0.0.1:4096
+      - COORD_LOG_LEVEL=info
+      - LOG_LEVEL=info
+    volumes:
+      - coordination-tertiary-data:/app/data
+      - ./certs:/app/data/certs:ro
+    networks:
+      - coordination-net
+    depends_on:
+      - coordination-primary
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4126/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ─── Reverse Proxy (Optional - for TLS termination) ────────────
+  
+  nginx:
+    image: nginx:alpine
+    container_name: coordination-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    networks:
+      - coordination-net
+    depends_on:
+      - coordination-primary
+      - coordination-secondary
+      - coordination-tertiary
+    profiles:
+      - proxy
+
+  # ─── Prometheus (Metrics) ──────────────────────────────────────
+  
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: coordination-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      - coordination-net
+    profiles:
+      - monitoring
+
+  # ─── Grafana (Visualization) ───────────────────────────────────
+  
+  grafana:
+    image: grafana/grafana:latest
+    container_name: coordination-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    networks:
+      - coordination-net
+    profiles:
+      - monitoring
+
+  # ─── Log Aggregation (Loki) ────────────────────────────────────
+  
+  loki:
+    image: grafana/loki:latest
+    container_name: coordination-loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yml:/etc/loki/local-config.yaml:ro
+      - loki-data:/loki
+    networks:
+      - coordination-net
+    profiles:
+      - monitoring
+
+  # ─── Log Shipper (Promtail) ────────────────────────────────────
+  
+  promtail:
+    image: grafana/promtail:latest
+    container_name: coordination-promtail
+    restart: unless-stopped
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yml:ro
+      - coordination-primary-data:/app/data/logs:ro
+      - coordination-secondary-data:/app/data/logs:ro
+      - coordination-tertiary-data:/app/data/logs:ro
+    networks:
+      - coordination-net
+    profiles:
+      - monitoring
+
+# ─── Volumes ───────────────────────────────────────────────────────
+
+volumes:
+  coordination-primary-data:
+  coordination-secondary-data:
+  coordination-tertiary-data:
+  prometheus-data:
+  grafana-data:
+  loki-data:
+
+# ─── Networks ──────────────────────────────────────────────────────
+
+networks:
+  coordination-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
