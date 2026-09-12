@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+data/
+*.pid
+*.seed
+*.pid.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build
+dist/
+build/
+
+# Certificates (keep example, ignore real certs)
+certs/*.crt
+certs/*.key
+certs/*.pem
+!certs/README.md
+
+# Docker
+.dockerignore
+
+# Kubernetes secrets (use sealed secrets instead)
+k8s/secret.yaml
+
+# Temporary files
+*.tmp
+*.temp

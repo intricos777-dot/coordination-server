@@ -1,0 +1,18 @@
+# Railway ignores - files not needed for deployment
+.git
+.gitignore
+README.md
+*.md
+docs/
+test-*.js
+test-*.mjs
+*.sh
+Dockerfile*
+docker-compose*
+k8s/
+*.service
+*.env*
+certs/
+!package.json
+!src/
+!railway.json
