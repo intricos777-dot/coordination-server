@@ -194,3 +194,63 @@
 {"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T01:10:21.634Z"}
 {"agentId":"test-client","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T01:10:21.660Z"}
 {"level":"info","message":"Shutting down...","timestamp":"2026-09-12T01:10:21.668Z"}
+{"level":"info","message":"Federation node node-4a81863a started","timestamp":"2026-09-12T01:12:57.332Z"}
+{"level":"info","message":"Federation node started: node-4a81863a","timestamp":"2026-09-12T01:12:57.348Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T01:12:57.374Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T01:12:57.374Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T01:12:57.375Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T01:12:57.376Z"}
+{"agentId":"test-lia","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T01:13:00.060Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T01:13:00.254Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T01:13:04.498Z"}
+{"level":"info","message":"Federation node node-4a81863a stopped","timestamp":"2026-09-12T01:13:04.498Z"}
+{"level":"info","message":"Server closed","timestamp":"2026-09-12T01:13:04.503Z"}
+{"level":"info","message":"Federation node node-3fadbdf1 started","timestamp":"2026-09-12T01:14:32.399Z"}
+{"level":"info","message":"Federation node started: node-3fadbdf1","timestamp":"2026-09-12T01:14:32.408Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T01:14:32.419Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T01:14:32.419Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T01:14:32.419Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T01:14:32.419Z"}
+{"agentId":"test-lia-groq","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T01:14:35.112Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T01:14:35.634Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T01:14:51.944Z"}
+{"level":"info","message":"Federation node node-3fadbdf1 stopped","timestamp":"2026-09-12T01:14:51.956Z"}
+{"level":"error","message":"Forced shutdown","timestamp":"2026-09-12T01:15:01.972Z"}
+{"level":"info","message":"Federation node node-4608a8da started","timestamp":"2026-09-12T01:20:14.232Z"}
+{"level":"info","message":"Federation node started: node-4608a8da","timestamp":"2026-09-12T01:20:14.239Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T01:20:14.248Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T01:20:14.248Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T01:20:14.248Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T01:20:14.248Z"}
+{"agentId":"test-lia","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T01:20:16.777Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T01:20:21.518Z"}
+{"level":"info","message":"Federation node node-057da420 started","timestamp":"2026-09-12T01:20:28.579Z"}
+{"level":"info","message":"Federation node started: node-057da420","timestamp":"2026-09-12T01:20:28.582Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T01:20:28.590Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T01:20:28.590Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T01:20:28.591Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T01:20:28.591Z"}
+{"agentId":"test-lia-groq","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T01:20:31.432Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-12T01:20:36.477Z"}
+{"level":"info","message":"Federation node node-faf4c3e1 started","timestamp":"2026-09-12T01:21:14.473Z"}
+{"level":"info","message":"Federation node started: node-faf4c3e1","timestamp":"2026-09-12T01:21:14.481Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-12T01:21:14.487Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-12T01:21:14.488Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-12T01:21:14.488Z"}
+{"level":"info","message":"Admin endpoints enabled (X-Admin-Token required)","timestamp":"2026-09-12T01:21:14.488Z"}
+{"agentId":"lia-groq-823151-mtxp8nxo","event":"token_issued","level":"info","message":"AUDIT","timestamp":"2026-09-12T01:21:16.382Z"}
+{"ip":"127.0.0.1","level":"info","message":"WS connection","timestamp":"2026-09-12T01:21:16.395Z"}
+{"agentId":"lia-groq-823151-mtxp8nxo","event":"agent_registered","level":"info","message":"AUDIT","name":"LiaGroq-lia-groq-823151-mtxp8nxo","timestamp":"2026-09-12T01:21:16.400Z","type":"lia-groq-bridge"}
+{"event":"broadcast","federated":true,"from":"lia-groq-823151-mtxp8nxo","level":"info","message":"AUDIT","recipients":0,"timestamp":"2026-09-12T01:21:16.403Z"}
+{"level":"info","message":"Federation node node-464d9f05 started","timestamp":"2026-09-18T22:22:30.037Z"}
+{"level":"info","message":"Federation node started: node-464d9f05","timestamp":"2026-09-18T22:22:30.058Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-18T22:22:30.066Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-18T22:22:30.066Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-18T22:22:30.067Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-18T22:22:32.001Z"}
+{"level":"info","message":"Federation node node-f310562f started","timestamp":"2026-09-18T22:22:40.136Z"}
+{"level":"info","message":"Federation node started: node-f310562f","timestamp":"2026-09-18T22:22:40.140Z"}
+{"level":"info","message":"Coordination Server running on http://localhost:4126","timestamp":"2026-09-18T22:22:40.147Z"}
+{"level":"info","message":"WebSocket: ws://localhost:4126/ws","timestamp":"2026-09-18T22:22:40.147Z"}
+{"level":"info","message":"REST API: http://localhost:4126/api/","timestamp":"2026-09-18T22:22:40.147Z"}
+{"level":"info","message":"Shutting down...","timestamp":"2026-09-19T01:31:14.514Z"}
