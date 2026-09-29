@@ -31,15 +31,36 @@ import { Capability, CapabilityStore } from './capabilities.js';
 import { FederationNode } from './federation.js';
 import { WebSocketTransport, StreamMultiplexer, StreamType } from './streaming.js';
 
-config();
+// Load the real env file. A bare config() only reads ./.env, which this
+// repo deliberately does not have: the secrets live 0600 outside every git
+// repository. Without this the server silently fell back to a RANDOM
+// per-boot JWT secret and root key, so every agent's token was invalidated
+// on each restart and no two nodes could ever authenticate to each other.
+const ENV_FILE = process.env.COORD_ENV_FILE
+  || `${process.env.HOME}/.config/coordination-server/coordination-server.env`;
+if (existsSync(ENV_FILE)) {
+  config({ path: ENV_FILE });
+  console.log(`[config] loaded ${ENV_FILE}`);
+} else {
+  console.warn(`[config] ${ENV_FILE} not found - falling back to random per-boot ` +
+               `secrets. Agents will not be able to authenticate persistently.`);
+}
 
 // ─── Configuration ────────────────────────────────────────────────
 
 const PORT = Number(process.env.COORD_PORT || 4126);
 const JWT_SECRET = process.env.COORD_JWT_SECRET || randomBytes(64).toString('hex');
 const JWT_EXPIRY = process.env.COORD_JWT_EXPIRY || '24h';
-const LOG_DIR = process.env.COORD_LOG_DIR || './data/logs';
-const DATA_DIR = process.env.COORD_DATA_DIR || './data';
+// Expand a leading $HOME. dotenv does NOT expand variables, so the env file's
+// COORD_LOG_DIR=$HOME/var/log/... would otherwise be used as a LITERAL
+// directory named "$HOME", relative to WorkingDirectory.
+const expandHome = (v, fallback) => {
+  const s = v || fallback;
+  return s.startsWith('$HOME') ? process.env.HOME + s.slice('$HOME'.length) : s;
+};
+
+const LOG_DIR = expandHome(process.env.COORD_LOG_DIR, './data/logs');
+const DATA_DIR = expandHome(process.env.COORD_DATA_DIR, './data');
 const ALLOWED_ORIGINS = (process.env.COORD_ALLOWED_ORIGINS || 'http://localhost:3000,http://localhost:4096,http://127.0.0.1:3000,http://127.0.0.1:4096').split(',');
 const TLS_CERT = process.env.COORD_TLS_CERT || '';
 const TLS_KEY = process.env.COORD_TLS_KEY || '';
@@ -1396,10 +1417,15 @@ const startServer = async () => {
     }
   }
   
-  server.listen(PORT, '0.0.0.0', () => {
-    logger.info(`Coordination Server running on http://localhost:${PORT}`);
-    logger.info(`WebSocket: ws://localhost:${PORT}/ws`);
-    logger.info(`REST API: http://localhost:${PORT}/api/`);
+  // Bind loopback by default. This is a local agent-to-agent hub: every
+  // agent runs on this host, so 0.0.0.0 exposed it to the whole LAN for no
+  // benefit, over plaintext HTTP, with no TLS. Set COORD_BIND_HOST=0.0.0.0
+  // deliberately if you ever front it with a real reverse proxy.
+  server.listen(PORT, process.env.COORD_BIND_HOST || '127.0.0.1', () => {
+    const host = process.env.COORD_BIND_HOST || '127.0.0.1';
+    logger.info(`Coordination Server running on http://${host}:${PORT}`);
+    logger.info(`WebSocket: ws://${host}:${PORT}/ws`);
+    logger.info(`REST API: http://${host}:${PORT}/api/`);
     if (ADMIN_TOKEN) logger.info('Admin endpoints enabled (X-Admin-Token required)');
   });
 };
