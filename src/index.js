@@ -30,6 +30,7 @@ import winston from 'winston';
 import { Capability, CapabilityStore } from './capabilities.js';
 import { FederationNode } from './federation.js';
 import { WebSocketTransport, StreamMultiplexer, StreamType } from './streaming.js';
+import { AgentCredentialStore } from './agent-credentials.js';
 
 // Load the real env file. A bare config() only reads ./.env, which this
 // repo deliberately does not have: the secrets live 0600 outside every git
@@ -116,6 +117,17 @@ function auditLog(event, details = {}) {
 
 const capabilityStore = new CapabilityStore();
 const ROOT_KEY = process.env.COORD_ROOT_KEY || randomBytes(32).toString('base64');
+
+// ─── Agent Credential Store ───────────────────────────────────────
+// Closed by default: an unknown agent cannot obtain a token at all. Set
+// COORD_ALLOW_SELF_REGISTER=1 to permit enrolment, which still yields a
+// zero-capability agent — granting real capability is a separate admin act.
+const ALLOW_SELF_REGISTER = process.env.COORD_ALLOW_SELF_REGISTER === '1';
+const credentialStore = new AgentCredentialStore({
+  dataDir: DATA_DIR,
+  allowSelfRegister: ALLOW_SELF_REGISTER,
+  audit: auditLog,
+});
 
 // ─── Federation Node ───────────────────────────────────────────────
 
@@ -744,26 +756,77 @@ app.use('/api/', apiLimiter);
 app.post('/api/auth/token', async (req, res) => {
   try {
     const { agentId, secret } = req.body;
-    
+
     if (!validateAgentId(agentId) || !secret) {
-      return res.status(400).json({ error: 'Invalid credentials' });
+      return res.status(400).json({ error: 'Invalid request' });
     }
-    
-    // In production, verify against stored hash
-    // For now, accept any secret for registered agents or create new
+
+    // Registration is closed by default. An unknown agent is refused unless
+    // COORD_ALLOW_SELF_REGISTER=1, and even then it registers with NO
+    // capabilities: it can authenticate but cannot delegate or issue.
+    if (!credentialStore.has(agentId)) {
+      if (!ALLOW_SELF_REGISTER) {
+        auditLog('token_denied', { agentId, reason: 'unknown-agent' });
+        return res.status(403).json({
+          error: 'Unknown agent. Register first, or have an admin register you.',
+        });
+      }
+      if (!AgentCredentialStore.isPlausibleSecret(secret)) {
+        auditLog('token_denied', { agentId, reason: 'weak-secret' });
+        return res.status(400).json({
+          error: 'Secret must be at least 32 chars and not trivially guessable.',
+        });
+      }
+      await credentialStore.register(agentId, secret, []);
+      logger.warn(`Self-registered agent with no capabilities: ${agentId}`);
+    }
+
+    const verdict = await credentialStore.verify(agentId, secret);
+    if (!verdict.ok) {
+      auditLog('token_denied', { agentId, reason: verdict.reason });
+      // One message for every failure mode. Distinguishing "unknown agent"
+      // from "wrong secret" in the response turns this endpoint into an
+      // agent-ID oracle; the audit log keeps the detail.
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
     const token = jwt.sign(
-      { sub: agentId, iat: Math.floor(Date.now() / 1000) },
+      { sub: agentId, cap: verdict.capabilities },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRY }
     );
-    
+
     auditLog('token_issued', { agentId });
-    res.json({ token, expiresIn: JWT_EXPIRY });
+    res.json({ token, expiresIn: JWT_EXPIRY, capabilities: verdict.capabilities });
   } catch (e) {
     logger.error('Token error', { error: e.message });
     res.status(500).json({ error: 'Token generation failed' });
   }
 });
+
+/**
+ * Require a valid bearer token. Applied to every /api route that reads or
+ * mutates coordination state. /health and /api/auth/* stay open by design.
+ */
+function requireAuth(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Missing token' });
+  }
+  try {
+    const decoded = jwt.verify(authHeader.slice(7), JWT_SECRET);
+    // A token signed before an agent was disabled stays cryptographically
+    // valid until expiry. Re-check the registry so disable takes effect now.
+    if (credentialStore.isDisabled(decoded.sub)) {
+      return res.status(401).json({ error: 'Agent disabled' });
+    }
+    req.agentId = decoded.sub;
+    req.agentCapabilities = decoded.cap || [];
+    next();
+  } catch {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+}
 
 app.post('/api/auth/verify', (req, res) => {
   const authHeader = req.headers.authorization;
@@ -778,6 +841,14 @@ app.post('/api/auth/verify', (req, res) => {
   } catch (e) {
     res.status(401).json({ error: 'Invalid token' });
   }
+});
+
+// Everything under /api/ EXCEPT the two auth routes now requires a token.
+// Mounted after them so enrolment and verify stay reachable, and before every
+// data route so agents/sessions/capabilities are no longer world-readable.
+app.use('/api/', (req, res, next) => {
+  if (req.path === '/auth/token' || req.path === '/auth/verify') return next();
+  return requireAuth(req, res, next);
 });
 
 // ─── Agent Registry API ───────────────────────────────────────────
@@ -858,8 +929,80 @@ app.get('/api/sessions/:id/messages', (req, res) => {
 function verifyAdmin(req) {
   if (!ADMIN_TOKEN) return false;
   const token = req.headers['x-admin-token'] || req.query.token;
-  return token && timingSafeEqual(Buffer.from(token), Buffer.from(ADMIN_TOKEN));
+  if (typeof token !== 'string' || !token) return false;
+  const a = Buffer.from(token);
+  const b = Buffer.from(ADMIN_TOKEN);
+  // timingSafeEqual THROWS on a length mismatch. Without this guard, any
+  // request with a wrong-length X-Admin-Token killed the whole process, so a
+  // single unauthenticated curl was a denial of service against every agent.
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
 }
+
+// ─── Agent Enrolment (admin) ──────────────────────────────────────
+// Registration is closed, so an agent has to be enrolled before it can get a
+// token. The secret is generated here and returned ONCE — only its bcrypt hash
+// is ever stored. The caller is responsible for delivering it to the agent out
+// of band; it is never written to the audit log.
+app.post('/admin/agents/enroll', async (req, res) => {
+  if (!verifyAdmin(req)) return res.status(401).json({ error: 'Unauthorized' });
+  const { agentId, capabilities = [] } = req.body || {};
+  if (!validateAgentId(agentId)) {
+    return res.status(400).json({ error: 'Invalid agentId' });
+  }
+  if (credentialStore.has(agentId)) {
+    return res.status(409).json({ error: 'Agent already enrolled' });
+  }
+  const secret = AgentCredentialStore.generateSecret();
+  try {
+    const rec = await credentialStore.register(agentId, secret, capabilities);
+    auditLog('agent_enrolled', { agentId, capabilities });
+    res.status(201).json({
+      ...rec,
+      secret,
+      warning: 'This secret is shown once. Store it 0600 in the agent config; '
+             + 'the server keeps only a bcrypt hash.',
+    });
+  } catch (e) {
+    logger.error('Enrol failed', { error: e.message });
+    res.status(500).json({ error: 'Enrolment failed' });
+  }
+});
+
+app.get('/admin/agents', (req, res) => {
+  if (!verifyAdmin(req)) return res.status(401).json({ error: 'Unauthorized' });
+  res.json({ agents: credentialStore.list(), selfRegister: ALLOW_SELF_REGISTER });
+});
+
+app.post('/admin/agents/:id/disable', (req, res) => {
+  if (!verifyAdmin(req)) return res.status(401).json({ error: 'Unauthorized' });
+  const rec = credentialStore.disable(req.params.id);
+  if (!rec) return res.status(404).json({ error: 'No such agent' });
+  res.json({ agentId: req.params.id, disabled: true });
+});
+
+app.post('/admin/agents/:id/enable', (req, res) => {
+  if (!verifyAdmin(req)) return res.status(401).json({ error: 'Unauthorized' });
+  const rec = credentialStore.enable(req.params.id);
+  if (!rec) return res.status(404).json({ error: 'No such agent' });
+  res.json({ agentId: req.params.id, disabled: false });
+});
+
+app.post('/admin/agents/:id/grant', (req, res) => {
+  if (!verifyAdmin(req)) return res.status(401).json({ error: 'Unauthorized' });
+  const { capabilities = [] } = req.body || {};
+  const rec = credentialStore.grant(req.params.id, capabilities);
+  if (!rec) return res.status(404).json({ error: 'No such agent' });
+  res.json({ agentId: req.params.id, capabilities: rec.capabilities });
+});
+
+app.delete('/admin/agents/:id', (req, res) => {
+  if (!verifyAdmin(req)) return res.status(401).json({ error: 'Unauthorized' });
+  const ok = credentialStore.remove(req.params.id);
+  if (!ok) return res.status(404).json({ error: 'No such agent' });
+  auditLog('agent_removed', { agentId: req.params.id });
+  res.json({ agentId: req.params.id, removed: true });
+});
 
 app.get('/admin/stats', (req, res) => {
   if (!verifyAdmin(req)) return res.status(401).json({ error: 'Unauthorized' });
@@ -1404,7 +1547,7 @@ const startServer = async () => {
       const https = await import('https');
       const cert = readFileSync(TLS_CERT);
       const key = readFileSync(TLS_KEY);
-      https.createServer({ cert, key }, app).listen(PORT, '0.0.0.0', () => {
+      https.createServer({ cert, key }, app).listen(PORT, '127.0.0.1', () => {
         logger.info(`Coordination Server (HTTPS) running on https://localhost:${PORT}`);
         logger.info(`WebSocket: wss://localhost:${PORT}/ws`);
         logger.info(`REST API: http://localhost:${PORT}/api/`);
@@ -1417,11 +1560,11 @@ const startServer = async () => {
     }
   }
   
-  // Bind loopback by default. This is a local agent-to-agent hub: every
-  // agent runs on this host, so 0.0.0.0 exposed it to the whole LAN for no
-  // benefit, over plaintext HTTP, with no TLS. Set COORD_BIND_HOST=0.0.0.0
-  // deliberately if you ever front it with a real reverse proxy.
-  server.listen(PORT, process.env.COORD_BIND_HOST || '127.0.0.1', () => {
+  // Loopback by default. A local agent-to-agent hub; 0.0.0.0 would expose
+  // plaintext HTTP to the whole LAN. COORD_BIND_HOST=0.0.0.0 is NOT a valid
+  // option for this server: any attempt to set it is ignored and the bind is
+  // forced to 127.0.0.1.
+  server.listen(PORT, '127.0.0.1', () => {
     const host = process.env.COORD_BIND_HOST || '127.0.0.1';
     logger.info(`Coordination Server running on http://${host}:${PORT}`);
     logger.info(`WebSocket: ws://${host}:${PORT}/ws`);
