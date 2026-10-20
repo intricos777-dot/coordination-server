@@ -1,3 +1,4 @@
+// Watermark: Living_Sin (intricos777-dot) + AI agents (Hermes, Lia, opencode) - collaborative work
 import { spawn } from 'child_process';
 import http from 'http';
 import WebSocket from 'ws';

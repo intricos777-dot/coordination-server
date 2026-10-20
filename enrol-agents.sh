@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Watermark: Living_Sin (intricos777-dot) + AI agents (Hermes, Lia, opencode) - collaborative work
 # Enrol the real agents and drop each secret into a 0600 config.
 # Secrets are shown once by the server; this writes them straight to disk
 # and never echoes them to the terminal.

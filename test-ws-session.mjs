@@ -1,3 +1,4 @@
+// Watermark: Living_Sin (intricos777-dot) + AI agents (Hermes, Lia, opencode) - collaborative work
 /**
  * test-ws-session.mjs — end-to-end WebSocket check with TWO real agents.
  *

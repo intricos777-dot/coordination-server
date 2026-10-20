@@ -1,3 +1,4 @@
+// Watermark: Living_Sin (intricos777-dot) + AI agents (Hermes, Lia, opencode) - collaborative work
 // Does an unknown agent leak existence via response timing? bcrypt.compare
 // against a dummy hash should make both paths cost roughly the same.
 import { AgentCredentialStore } from './src/agent-credentials.js';

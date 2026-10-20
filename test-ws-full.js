@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Watermark: Living_Sin (intricos777-dot) + AI agents (Hermes, Lia, opencode) - collaborative work
 
 // Start coordination server in child process
 const { spawn } = require('child_process');

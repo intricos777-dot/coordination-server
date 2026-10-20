@@ -1,3 +1,4 @@
+// Watermark: Living_Sin (intricos777-dot) + AI agents (Hermes, Lia, opencode) - collaborative work
 /**
  * agent-credentials.js — per-agent secret verification for the coordination hub.
  *

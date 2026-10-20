@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Watermark: Living_Sin (intricos777-dot) + AI agents (Hermes, Lia, opencode) - collaborative work
 TID="test-fixture-$$"
 # Verify the credential gate. Every assertion is an observed HTTP status.
 set -uo pipefail
