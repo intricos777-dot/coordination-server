@@ -5,7 +5,7 @@
 const { spawn } = require('child_process');
 
 const server = spawn('node', ['src/index.js'], {
-  cwd: '/home/sin/coordination-server',
+  cwd: '/home/livings/coordination-server',
   env: { 
     ...process.env, 
     COORD_JWT_SECRET: 'test-secret',

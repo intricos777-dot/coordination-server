@@ -4,7 +4,7 @@ import http from 'http';
 import WebSocket from 'ws';
 
 const server = spawn('node', ['src/index.js'], {
-  cwd: '/home/sin/coordination-server',
+  cwd: '/home/livings/coordination-server',
   env: { 
     ...process.env, 
     COORD_JWT_SECRET: 'test-secret',
